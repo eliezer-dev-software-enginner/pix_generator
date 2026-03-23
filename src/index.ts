@@ -1,5 +1,7 @@
 import MercadoPagoConfig, { Payment } from 'mercadopago';
 
+import type { PaymentResponse } from 'mercadopago/dist/clients/payment/commonTypes';
+
 export type PaymentData = {
   email: string | undefined;
   description: string;
@@ -23,8 +25,6 @@ export class PixGenerator {
   }
 
   public async createPaymentWithData(data: PaymentData) {
-    'use server';
-
     try {
       const response = await this.payment.create({
         body: {
@@ -58,7 +58,7 @@ export class PixGenerator {
         status: status,
       };
     } catch (error: any) {
-      console.error('Erro ao criar pagamento PIX:', error);
+      //console.error('Erro ao criar pagamento PIX:', error);
       return {
         success: false,
         error: error.message || 'Erro ao criar pagamento',
@@ -66,7 +66,7 @@ export class PixGenerator {
     }
   }
 
-  public async getPaymentById(paymentId: string) {
+  public async getPaymentById(paymentId: string): Promise<PaymentResponse> {
     const result = await this.payment.get({ id: paymentId });
     return result;
     //const novoStatus: string = result.status || 'unknown';
