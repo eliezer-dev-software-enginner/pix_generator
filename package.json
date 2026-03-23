@@ -1,0 +1,21 @@
+{
+  "name": "pix_generator",
+  "version": "1.0.0",
+  "description": "",
+  "main": "./dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "mercadopago": "2.9.0",
+    "typescript": "^6.0.2"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "devDependencies": {
+    "@types/node": "^25.5.0"
+  }
+}
