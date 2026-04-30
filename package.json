@@ -19,5 +19,11 @@
   "type": "module",
   "devDependencies": {
     "@types/node": "^25.5.0"
+  },
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
   }
 }
