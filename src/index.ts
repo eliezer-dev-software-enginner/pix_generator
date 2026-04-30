@@ -11,6 +11,7 @@ export type PaymentData = {
   lastName: string;
   externalRef: string; // Referência externa (ID interno do sistema)
   value: number; // Valor da transação (deve ser > 0)
+  metadata?: Record<string, any>;
 };
 
 /**
