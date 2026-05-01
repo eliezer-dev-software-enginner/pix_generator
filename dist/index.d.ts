@@ -1,4 +1,4 @@
-import type { PaymentResponse } from "mercadopago/dist/clients/payment/commonTypes";
+import type { PaymentResponse } from 'mercadopago/dist/clients/payment/commonTypes';
 /**
  * Dados necessários para gerar um pagamento via PIX
  */
@@ -27,7 +27,7 @@ export type PixPaymentResult = {
 /**
  * Serviço responsável por interagir com o Mercado Pago para pagamentos PIX
  */
-export declare class MercadoPagoPixService {
+export declare class PixService {
     private readonly payment;
     /**
      * Inicializa o client do Mercado Pago

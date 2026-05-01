@@ -1,5 +1,6 @@
-import MercadoPagoConfig, { Payment } from "mercadopago";
-import type { PaymentResponse } from "mercadopago/dist/clients/payment/commonTypes";
+import MercadoPagoConfig, { Payment } from 'mercadopago';
+
+import type { PaymentResponse } from 'mercadopago/dist/clients/payment/commonTypes';
 
 /**
  * Dados necessários para gerar um pagamento via PIX
@@ -31,7 +32,7 @@ export type PixPaymentResult = {
 /**
  * Serviço responsável por interagir com o Mercado Pago para pagamentos PIX
  */
-export class MercadoPagoPixService {
+export class PixService {
   private readonly payment: Payment;
 
   /**
@@ -39,8 +40,8 @@ export class MercadoPagoPixService {
    * @param accessToken Token de acesso da API
    */
   public constructor(accessToken: string) {
-    if (!accessToken || accessToken.trim() === "") {
-      throw new Error("Access token cannot be empty");
+    if (!accessToken || accessToken.trim() === '') {
+      throw new Error('Access token cannot be empty');
     }
 
     const client = new MercadoPagoConfig({
@@ -57,7 +58,7 @@ export class MercadoPagoPixService {
    */
   public async createPixPayment(data: PaymentData): Promise<PixPaymentResult> {
     if (data.value <= 0) {
-      throw new Error("Transaction amount must be greater than zero");
+      throw new Error('Transaction amount must be greater than zero');
     }
 
     try {
@@ -65,7 +66,7 @@ export class MercadoPagoPixService {
         body: {
           transaction_amount: data.value,
           description: data.description,
-          payment_method_id: "pix",
+          payment_method_id: 'pix',
           payer: {
             email: data.email,
             first_name: data.firstName,
@@ -83,13 +84,13 @@ export class MercadoPagoPixService {
           paymentId: String(response.id),
           qrCodeBase64: transactionData?.qr_code_base64 ?? null,
           qrCode: transactionData?.qr_code ?? null,
-          status: response.status ?? "pending",
+          status: response.status ?? 'pending',
         },
         error: null,
       };
     } catch (error: unknown) {
       const message =
-        error instanceof Error ? error.message : "Erro ao criar pagamento";
+        error instanceof Error ? error.message : 'Erro ao criar pagamento';
 
       return {
         success: false,
@@ -108,7 +109,7 @@ export class MercadoPagoPixService {
     try {
       return await this.payment.get({ id: paymentId });
     } catch {
-      throw new Error("Error on search for payment with id: " + paymentId);
+      throw new Error('Error on search for payment with id: ' + paymentId);
     }
   }
 }
