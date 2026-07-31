@@ -1,4 +1,4 @@
-import MercadoPagoConfig, { Payment } from 'mercadopago';
+import { MercadoPagoConfig, Payment } from 'mercadopago';
 
 import type { PaymentResponse } from 'mercadopago/dist/clients/payment/commonTypes';
 

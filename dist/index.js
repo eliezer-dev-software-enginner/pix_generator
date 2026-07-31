@@ -1,4 +1,4 @@
-import MercadoPagoConfig, { Payment } from 'mercadopago';
+import { MercadoPagoConfig, Payment } from 'mercadopago';
 /**
  * Serviço responsável por interagir com o Mercado Pago para pagamentos PIX.
  * Suporta modo emulador para testes locais.
