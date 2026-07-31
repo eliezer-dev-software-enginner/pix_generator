@@ -42,6 +42,35 @@ export type PixPaymentResult = {
 };
 
 /**
+ * Extrai a melhor mensagem possível de um erro de formato desconhecido.
+ * O SDK do Mercado Pago nem sempre rejeita com uma instância de Error - às
+ * vezes é um objeto de erro da API (com "message"/"cause"/"error") ou outra
+ * coisa. Preferimos sempre devolver algo útil em vez da string genérica.
+ */
+function extrairMensagemDeErro(error: unknown): string {
+  if (error instanceof Error) {
+    return error.message;
+  }
+
+  if (error && typeof error === 'object') {
+    const candidato = error as Record<string, unknown>;
+    const possivelMensagem = candidato.message ?? candidato.error ?? candidato.cause;
+
+    if (typeof possivelMensagem === 'string' && possivelMensagem.trim() !== '') {
+      return possivelMensagem;
+    }
+
+    try {
+      return JSON.stringify(error);
+    } catch {
+      return String(error);
+    }
+  }
+
+  return String(error);
+}
+
+/**
  * Serviço responsável por interagir com o Mercado Pago para pagamentos PIX.
  * Suporta modo emulador para testes locais.
  */
@@ -85,9 +114,13 @@ export class PixService {
       }
       return await this.createPixPaymentMercadoPago(data);
     } catch (error: unknown) {
-      const message =
-        error instanceof Error ? error.message : 'Erro ao criar pagamento';
-      return { success: false, data: null, error: message };
+      // Loga o erro bruto (o SDK do Mercado Pago as vezes rejeita com algo
+      // que nao e uma instancia de Error, ex.: objetos de erro da API com
+      // "cause"/"message" proprios) - sem isso, o chamador so via a string
+      // generica abaixo e nao tinha como saber o que de fato falhou.
+      console.error('[PixService] Erro ao criar pagamento PIX (Mercado Pago)', error);
+
+      return { success: false, data: null, error: extrairMensagemDeErro(error) };
     }
   }
 
